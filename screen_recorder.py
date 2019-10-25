@@ -41,7 +41,6 @@ def record():
     recorder.configure(text="Grabar")
     out.release()
     
-    
 ventana = Tk()
 #ventana.title("Screen Rescorder")
 init()
