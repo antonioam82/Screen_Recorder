@@ -7,8 +7,8 @@ import pyautogui
 def screen_s():
     user32 = ctypes.windll.user32
     user32.SetProcessDPIAware()
-    width, height = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
-    return (width,height)
+    dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
+    return dimensions
 
 screen_size = screen_s() #1600 900
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
@@ -20,9 +20,10 @@ while True:
     frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
     out.write(frame)
     #cv2.imshow("screenshot",frame)
-    if cv2.waitKey(0) == ord("q"):
+    if cv2.waitKey() == ord("q"):
         print("END")
         break
     
 cv2.destroyAllWindows()
 out.release()
+
