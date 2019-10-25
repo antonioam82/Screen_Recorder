@@ -41,12 +41,14 @@ def record():
     recorder.configure(text="Grabar")
     out.release()
     
+    
 ventana = Tk()
+ventana.geometry("150x80")
 #ventana.title("Screen Rescorder")
 init()
 
 recorder = Button(ventana,text="Grabar",command=record_state)
-recorder.pack(padx=10,pady=10)
+recorder.pack(padx=10,pady=20)
 
 ventana.mainloop()
 
