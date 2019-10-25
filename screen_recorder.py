@@ -40,7 +40,6 @@ def record():
     print("END")
     out.release()
     
-    
 ventana = Tk()
 #ventana.title("Screen Rescorder")
 init()
