@@ -27,6 +27,7 @@ def record_state():
         recording = False
     else:
         recording = True
+        recorder.configure(text="Parar")
         t1=threading.Thread(target=record)
         t1.start()
 
@@ -37,8 +38,9 @@ def record():
         frame = np.array(img)
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         out.write(frame)
-    print("END")
+    recorder.configure(text="Grabar")
     out.release()
+    
     
 ventana = Tk()
 #ventana.title("Screen Rescorder")
