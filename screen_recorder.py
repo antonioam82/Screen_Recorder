@@ -15,7 +15,6 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 2
 
 def screen_s():
-    #global user32
     user32 = ctypes.windll.user32
     user32.SetProcessDPIAware()
     dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
@@ -75,6 +74,9 @@ def audio_record():
     waveFile.setframerate(RATE)
     waveFile.writeframes(b''.join(frames))
     waveFile.close()
+    data = ""
+    stream = ""
+    frames = []
     
     
 ventana = Tk()
