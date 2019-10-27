@@ -32,7 +32,7 @@ def record_state():
         t1.start()
 
 def record():
-    global recording, out
+    global recording
     while recording == True:
         img = pyautogui.screenshot()
         frame = np.array(img)
