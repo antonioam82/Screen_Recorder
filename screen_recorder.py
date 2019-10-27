@@ -3,6 +3,7 @@ import pyaudio
 import cv2
 import ctypes
 import numpy as np
+import wave
 from time import perf_counter
 import pyautogui
 import threading
