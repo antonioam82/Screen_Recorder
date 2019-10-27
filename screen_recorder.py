@@ -19,7 +19,7 @@ def screen_s():
 
 def init():
     global screen_size, fourcc, out
-    global audio, FORMAT, CHANNELS, RATE, outAudio
+    global audio, FORMAT, CHANNELS, RATE, outAudio, data, stream, frames, CHUNK
     #VALORES PARA CAPTURA PANTALLA
     screen_size = screen_s()
     fourcc = cv2.VideoWriter_fourcc(*"XVID")
@@ -28,8 +28,15 @@ def init():
     audio = pyaudio.PyAudio()
     FORMAT = pyaudio.paInt16
     CHANNELS = 2
+    CHUNK=1024
     RATE = 44100
+    data = ""
+    stream = ""
     outAudio = "output.wav"
+    stream=audio.open(format=FORMAT,channels=CHANNELS,
+                      rate=RATE, input=True,
+                      frames_per_buffer=CHUNK)
+    frames = []
 
 def record_state():
     global recording
@@ -52,6 +59,12 @@ def record():
         print(num_frame)
     recorder.configure(text="Grabar")
     out.release()
+
+def audio_record():
+    global data, stream, frames
+    while recording == True:
+        data = stream.read(CHUNK)
+        frames.append(data)
     
     
 ventana = Tk()
