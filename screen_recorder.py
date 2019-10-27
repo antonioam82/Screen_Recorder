@@ -2,8 +2,8 @@ from tkinter import *
 import pyaudio
 import cv2
 import ctypes
-import numpy as np
 import wave
+import numpy as np
 from time import perf_counter
 import pyautogui
 import threading
@@ -16,6 +16,7 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 2
 
 def screen_s():
+    #global user32
     user32 = ctypes.windll.user32
     user32.SetProcessDPIAware()
     dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
@@ -69,7 +70,7 @@ def audio_record():
     stream.close()
     audio.terminate()
 
-    waveFile = wave.open(archivo, 'wb')
+    waveFile = wave.open(outAudio, 'wb')
     waveFile.setnchannels(CHANNELS)
     waveFile.setsampwidth(audio.get_sample_size(FORMAT))
     waveFile.setframerate(RATE)
@@ -79,9 +80,10 @@ def audio_record():
     stream = ""
     frames = []
     
+    
 ventana = Tk()
 ventana.geometry("150x80")
-#ventana.title("Screen Rescorder")
+ventana.title("Screen Rescorder")
 init()
 
 recorder = Button(ventana,text="Grabar",command=record_state)
