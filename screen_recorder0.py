@@ -30,20 +30,20 @@ def record_state():
 def record():
     global out
     while recording == True:
-        print("GRABANDO")
+        #print("GRABANDO")
         img = pyautogui.screenshot()
         frame = np.array(img)
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         out.write(frame)
-    print("FIN")
+    #print("FIN")
     recorder.configure(text="Grabar")
     out.release()
 
 ventana = Tk()
-ventana.geometry("150x80")
-ventana.title("Screen Rescorder")
+ventana.geometry("150x100")
 screen_size = screen_s()
-
+label = Label(ventana, text="Screen Recorder")
+label.pack(padx=10,pady=1)
 recorder = Button(ventana,text="Grabar",command=record_state)
 recorder.pack(padx=10,pady=20)
 
