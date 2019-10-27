@@ -45,7 +45,9 @@ def record_state():
         recording = True
         recorder.configure(text="Parar")
         t1=threading.Thread(target=record)
+        t2=threading.Thread(target=audio_record)
         t1.start()
+        t2.start()
 
 def record():
     global img, frame, out, num_frame
@@ -62,6 +64,18 @@ def audio_record():
     while recording == True:
         data = stream.read(CHUNK)
         frames.append(data)
+
+    stream.stop_stream()
+    stream.close()
+    audio.terminate()
+
+    waveFile = wave.open(archivo, 'wb')
+    waveFile.setnchannels(CHANNELS)
+    waveFile.setsampwidth(audio.get_sample_size(FORMAT))
+    waveFile.setframerate(RATE)
+    waveFile.writeframes(b''.join(frames))
+    waveFile.close()
+    
     
 ventana = Tk()
 ventana.geometry("150x80")
