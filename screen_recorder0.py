@@ -7,19 +7,13 @@ import pyautogui
 import threading
 
 recording = False
+fourcc = cv2.VideoWriter_fourcc(*"XVID")
 
 def screen_s():
-    #global user32
     user32 = ctypes.windll.user32
     user32.SetProcessDPIAware()
     dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
     return dimensions
-
-def init():
-    global screen_size, fourcc, out
-    screen_size = screen_s()
-    fourcc = cv2.VideoWriter_fourcc(*"XVID")
-    out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
 
 def record_state():
     global recording
@@ -32,7 +26,6 @@ def record_state():
         t1.start()
 
 def record():
-    global recording
     while recording == True:
         img = pyautogui.screenshot()
         frame = np.array(img)
@@ -40,12 +33,12 @@ def record():
         out.write(frame)
     recorder.configure(text="Grabar")
     out.release()
-    recording = False
 
 ventana = Tk()
 ventana.geometry("150x80")
 ventana.title("Screen Rescorder")
-init()
+screen_size = screen_s()
+out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
 
 recorder = Button(ventana,text="Grabar",command=record_state)
 recorder.pack(padx=10,pady=20)
