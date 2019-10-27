@@ -78,7 +78,6 @@ def audio_record():
     stream = ""
     frames = []
     
-    
 ventana = Tk()
 ventana.geometry("150x80")
 #ventana.title("Screen Rescorder")
