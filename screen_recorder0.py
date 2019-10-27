@@ -43,7 +43,6 @@ ventana = Tk()
 ventana.geometry("150x80")
 ventana.title("Screen Rescorder")
 screen_size = screen_s()
-#out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
 
 recorder = Button(ventana,text="Grabar",command=record_state)
 recorder.pack(padx=10,pady=20)
