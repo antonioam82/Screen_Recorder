@@ -8,7 +8,11 @@ import pyautogui
 import threading
 
 recording = False
-num_frame=0
+audio = pyaudio.PyAudio()
+CHUNK = 1024
+RATE = 44100
+FORMAT = pyaudio.paInt16
+CHANNELS = 2
 
 def screen_s():
     #global user32
@@ -19,17 +23,12 @@ def screen_s():
 
 def init():
     global screen_size, fourcc, out
-    global audio, FORMAT, CHANNELS, RATE, outAudio, data, stream, frames, CHUNK
+    global outAudio, data, stream, frames
     #VALORES PARA CAPTURA PANTALLA
     screen_size = screen_s()
     fourcc = cv2.VideoWriter_fourcc(*"XVID")
     out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
     #VALORES PARA SONIDO
-    audio = pyaudio.PyAudio()
-    FORMAT = pyaudio.paInt16
-    CHANNELS = 2
-    CHUNK=1024
-    RATE = 44100
     data = ""
     stream = ""
     outAudio = "output.wav"
@@ -55,8 +54,6 @@ def record():
         frame = np.array(img)
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         out.write(frame)
-        num_frame+=1
-        print(num_frame)
     recorder.configure(text="Grabar")
     out.release()
 
@@ -65,7 +62,6 @@ def audio_record():
     while recording == True:
         data = stream.read(CHUNK)
         frames.append(data)
-    
     
 ventana = Tk()
 ventana.geometry("150x80")
@@ -76,4 +72,5 @@ recorder = Button(ventana,text="Grabar",command=record_state)
 recorder.pack(padx=10,pady=20)
 
 ventana.mainloop()
+
 
