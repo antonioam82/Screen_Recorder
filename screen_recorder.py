@@ -80,15 +80,14 @@ def audio_record():
     stream = ""
     frames = []
     
-    
 ventana = Tk()
-ventana.geometry("150x80")
-ventana.title("Screen Rescorder")
+ventana.geometry("150x100")
+#ventana.title("Screen/Audio Rescorder")
 init()
-
+label = Label(ventana, text="Screen/Audio Recorder")
+label.pack(padx=10,pady=1)
 recorder = Button(ventana,text="Grabar",command=record_state)
 recorder.pack(padx=10,pady=20)
 
 ventana.mainloop()
-
 
