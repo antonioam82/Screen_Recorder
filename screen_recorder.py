@@ -9,11 +9,17 @@ import pyautogui
 import threading
 
 recording = False
-audio = pyaudio.PyAudio()
-CHUNK = 1024
-RATE = 44100
-FORMAT = pyaudio.paInt16
-CHANNELS = 2
+
+def init_aud():
+    global stream, data, frames, out, audio
+    audio = pyaudio.PyAudio()
+    fourcc = cv2.VideoWriter_fourcc(*"XVID")
+    out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
+    stream=audio.open(format=FORMAT,channels=CHANNELS,
+                      rate=RATE, input=True,
+                      frames_per_buffer=CHUNK)
+    data = ""
+    frames = []
 
 def screen_s():
     #global user32
@@ -22,28 +28,13 @@ def screen_s():
     dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
     return dimensions
 
-def init():
-    global screen_size, fourcc, out
-    global outAudio, data, stream, frames
-    #VALORES PARA CAPTURA PANTALLA
-    screen_size = screen_s()
-    fourcc = cv2.VideoWriter_fourcc(*"XVID")
-    out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
-    #VALORES PARA SONIDO
-    data = ""
-    stream = ""
-    outAudio = "output.wav"
-    stream=audio.open(format=FORMAT,channels=CHANNELS,
-                      rate=RATE, input=True,
-                      frames_per_buffer=CHUNK)
-    frames = []
-
 def record_state():
-    global recording
+    global recording, stream
     if recording == True:
         recording = False
     else:
         recording = True
+        init_aud()
         recorder.configure(text="Parar")
         t1=threading.Thread(target=record)
         t2=threading.Thread(target=audio_record)
@@ -51,7 +42,7 @@ def record_state():
         t2.start()
 
 def record():
-    global img, frame, out, num_frame
+    global img, frame, out
     while recording == True:
         img = pyautogui.screenshot()
         frame = np.array(img)
@@ -77,17 +68,22 @@ def audio_record():
     waveFile.writeframes(b''.join(frames))
     waveFile.close()
     data = ""
-    stream = ""
     frames = []
     
 ventana = Tk()
 ventana.geometry("150x100")
 #ventana.title("Screen/Audio Rescorder")
-init()
+
+screen_size=screen_s()
+CHUNK = 1024
+RATE = 44100
+FORMAT = pyaudio.paInt16
+CHANNELS = 2
+
+outAudio = "output.wav"
 label = Label(ventana, text="Screen/Audio Recorder")
 label.pack(padx=10,pady=1)
 recorder = Button(ventana,text="Grabar",command=record_state)
 recorder.pack(padx=10,pady=20)
 
 ventana.mainloop()
-
