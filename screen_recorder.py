@@ -34,7 +34,6 @@ def record_state():
         recording = False
     else:
         recording = True
-        init_aud()
         recorder.configure(text="Parar")
         t1=threading.Thread(target=record)
         t2=threading.Thread(target=audio_record)
@@ -67,8 +66,7 @@ def audio_record():
     waveFile.setframerate(RATE)
     waveFile.writeframes(b''.join(frames))
     waveFile.close()
-    data = ""
-    frames = []
+    init_aud()
     
 ventana = Tk()
 ventana.geometry("150x100")
@@ -79,7 +77,7 @@ CHUNK = 1024
 RATE = 44100
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
-
+init_aud()
 outAudio = "output.wav"
 label = Label(ventana, text="Screen/Audio Recorder")
 label.pack(padx=10,pady=1)
