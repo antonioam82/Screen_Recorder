@@ -34,6 +34,7 @@ def record_state():
         recording = False
     else:
         recording = True
+        init_aud()
         recorder.configure(text="Parar")
         t1=threading.Thread(target=record)
         t2=threading.Thread(target=audio_record)
@@ -66,7 +67,6 @@ def audio_record():
     waveFile.setframerate(RATE)
     waveFile.writeframes(b''.join(frames))
     waveFile.close()
-    init_aud()
     
 ventana = Tk()
 ventana.geometry("150x100")
