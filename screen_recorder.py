@@ -79,7 +79,7 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 2
 init_aud()
 outAudio = "output.wav"
-label = Label(ventana, text="Screen/Audio Recorder")
+label = Label(ventana, text="Screen/Audio Recorder",fg='blue')
 label.pack(padx=10,pady=1)
 recorder = Button(ventana,text="Grabar",command=record_state)
 recorder.pack(padx=10,pady=20)
