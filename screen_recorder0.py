@@ -42,7 +42,7 @@ def record():
 ventana = Tk()
 ventana.geometry("150x100")
 screen_size = screen_s()
-label = Label(ventana, text="Screen Recorder")
+label = Label(ventana, text="Screen Recorder",fg='blue')
 label.pack(padx=10,pady=1)
 recorder = Button(ventana,text="Grabar",command=record_state)
 recorder.pack(padx=10,pady=20)
