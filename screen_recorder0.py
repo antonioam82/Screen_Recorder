@@ -23,7 +23,7 @@ def record_state():
     else:
         recording = True
         out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
-        recorder.configure(text="Parar")
+        recorder.configure(text="Stop")
         t1=threading.Thread(target=record)
         t1.start()
 
@@ -36,7 +36,7 @@ def record():
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         out.write(frame)
     #print("FIN")
-    recorder.configure(text="Grabar")
+    recorder.configure(text="Record")
     out.release()
 
 ventana = Tk()
@@ -44,7 +44,7 @@ ventana.geometry("150x100")
 screen_size = screen_s()
 label = Label(ventana, text="Screen Recorder",fg='blue')
 label.pack(padx=10,pady=1)
-recorder = Button(ventana,text="Grabar",command=record_state)
+recorder = Button(ventana,text="Record",command=record_state)
 recorder.pack(padx=10,pady=20)
 
 ventana.mainloop()
