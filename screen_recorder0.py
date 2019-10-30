@@ -48,12 +48,13 @@ def record():
 
 ventana = Tk()
 ventana.geometry("190x120")
+ventana.configure(bg="light blue")
 screen_size = screen_s()
-label = Label(ventana, text="Screen Recorder",fg='blue')
+label = Label(ventana, text="Screen Recorder",bg="light blue")
 label.pack(padx=10,pady=1)
-recorder = Button(ventana,text="Record",width=8,command=record_state)
+recorder = Button(ventana,text="Record",bg="light green",width=8,command=record_state)
 recorder.pack(padx=10,pady=20)
-folder = Button(ventana,text="Select Folder",width=10,command=direct)
+folder = Button(ventana,text="Select Folder",bg="light green",width=10,command=direct)
 folder.pack(padx=10,pady=1)
 
 ventana.mainloop()
