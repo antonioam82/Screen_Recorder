@@ -46,5 +46,7 @@ label = Label(ventana, text="Screen Recorder",fg='blue')
 label.pack(padx=10,pady=1)
 recorder = Button(ventana,text="Record",width=8,command=record_state)
 recorder.pack(padx=10,pady=20)
+folder = Button(ventana,text="Select Folder",width=10)
+folder.pack(padx=10,pady=1)
 
 ventana.mainloop()
