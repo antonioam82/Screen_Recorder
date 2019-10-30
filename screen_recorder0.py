@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Button, Label, Tk
 from tkinter import filedialog
 import cv2
 import ctypes
