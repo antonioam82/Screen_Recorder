@@ -44,7 +44,7 @@ ventana.geometry("150x100")
 screen_size = screen_s()
 label = Label(ventana, text="Screen Recorder",fg='blue')
 label.pack(padx=10,pady=1)
-recorder = Button(ventana,text="Record",command=record_state)
+recorder = Button(ventana,text="Record",width=8,command=record_state)
 recorder.pack(padx=10,pady=20)
 
 ventana.mainloop()
