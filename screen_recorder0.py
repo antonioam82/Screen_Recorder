@@ -1,10 +1,12 @@
 from tkinter import *
+from tkinter import filedialog
 import cv2
 import ctypes
 import numpy as np
 from time import perf_counter
 import pyautogui
 import threading
+import os
 
 recording = False
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
@@ -27,6 +29,11 @@ def record_state():
         t1=threading.Thread(target=record)
         t1.start()
 
+def direct():
+    directorio=filedialog.askdirectory()
+    if directorio!="":
+        os.chdir(directorio)
+
 def record():
     global out
     while recording == True:
@@ -46,7 +53,7 @@ label = Label(ventana, text="Screen Recorder",fg='blue')
 label.pack(padx=10,pady=1)
 recorder = Button(ventana,text="Record",width=8,command=record_state)
 recorder.pack(padx=10,pady=20)
-folder = Button(ventana,text="Select Folder",width=10)
+folder = Button(ventana,text="Select Folder",width=10,command=direct)
 folder.pack(padx=10,pady=1)
 
 ventana.mainloop()
