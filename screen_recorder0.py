@@ -4,7 +4,6 @@ import cv2
 import ctypes
 import glob
 import numpy as np
-from time import perf_counter
 import pyautogui
 import threading
 import os
