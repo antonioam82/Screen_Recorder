@@ -2,6 +2,7 @@ from tkinter import Button, Label, Tk
 from tkinter import filedialog
 import cv2
 import ctypes
+import glob
 import numpy as np
 from time import perf_counter
 import pyautogui
@@ -17,6 +18,18 @@ def screen_s():
     dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
     return dimensions
 
+def file_name():
+    count = 0
+    grabs = glob.glob('*.avi')
+    for i in grabs:
+        if "videocapture" in i:
+            count+=1
+    if count>0:
+        filename="videocapture"+"("+str(count)+")"+".avi"
+    else:
+        filename="videocapture.avi"
+    return filename
+
 def record_state():
     global out
     global recording
@@ -24,7 +37,7 @@ def record_state():
         recording = False
     else:
         recording = True
-        out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
+        out = cv2.VideoWriter(file_name(), fourcc, 20.0, (screen_size))
         recorder.configure(text="Stop")
         t1=threading.Thread(target=record)
         t1.start()
@@ -48,7 +61,7 @@ def record():
 
 ventana = Tk()
 ventana.geometry("190x120")
-ventana.configure(bg="gray")
+ventana.configure(bg="light gray")
 screen_size = screen_s()
 label = Label(ventana, text="Screen Recorder",bg="gray",fg="white")
 label.pack(padx=10,pady=1)
@@ -58,3 +71,4 @@ folder = Button(ventana,text="Select Folder",bg="gray66",width=10,command=direct
 folder.pack(padx=10,pady=1)
 
 ventana.mainloop()
+
