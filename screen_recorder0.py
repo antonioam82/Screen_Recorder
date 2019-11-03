@@ -19,8 +19,7 @@ def screen_s():
 
 def file_name():
     count = 0
-    grabs = glob.glob('*.avi')
-    for i in grabs:
+    for i in glob.glob('*.avi'):
         if "videocapture" in i:
             count+=1
     if count>0:
@@ -62,6 +61,7 @@ ventana = Tk()
 ventana.geometry("190x120")
 ventana.configure(bg="light gray")
 screen_size = screen_s()
+
 label = Label(ventana, text="Screen Recorder",bg="gray",fg="white")
 label.pack(padx=10,pady=1)
 recorder = Button(ventana,text="Record",bg="gray66",width=8,command=record_state)
