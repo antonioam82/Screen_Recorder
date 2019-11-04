@@ -20,12 +20,12 @@ def screen_s():
 def file_name():
     count = 0
     for i in glob.glob('*.avi'):
-        if "videocapture" in i:
+        if "screenvideo" in i:
             count+=1
     if count>0:
-        filename="videocapture"+"("+str(count)+")"+".avi"
+        filename="screenvideo"+"("+str(count)+")"+".avi"
     else:
-        filename="videocapture.avi"
+        filename="screenvideo.avi"
     return filename
 
 def record_state():
@@ -48,12 +48,10 @@ def direct():
 def record():
     global out
     while recording == True:
-        #print("GRABANDO")
         img = pyautogui.screenshot()
         frame = np.array(img)
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         out.write(frame)
-    #print("FIN")
     recorder.configure(text="Record")
     out.release()
 
