@@ -39,7 +39,7 @@ def record_state():
         recording = False
     else:
         recording = True
-        out = cv2.VideoWriter(file_name("screenvideo",".avi"), fourcc, 20.0, (screen_size))
+        out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 20.0, (screen_size))
         recorder.configure(text="Stop")
         t1=threading.Thread(target=record)
         t1.start()
@@ -66,11 +66,11 @@ ventana.geometry("215x145")
 ventana.configure(bg="light gray")
 screen_size = screen_s()
 
-label = Label(ventana, text="Screen Recorder",bg="gray",fg="white")
+label = Label(ventana, text="Screen Record&Shoot",bg="gray",fg="white")
 label.pack(padx=10,pady=1)
-recorder = Button(ventana,text="Record",bg="gray66",width=8,command=record_state)
+recorder = Button(ventana,text="Record",bg="light blue",fg="red",width=8,command=record_state)#gray66
 recorder.pack(padx=10,pady=10)
-shoot = Button(ventana,text="Screenshot",bg="gray66",width=8,command=screen_shoot)
+shoot = Button(ventana,text="Screenshot",bg="light blue",fg="red",width=8,command=screen_shoot)
 shoot.pack(padx=10,pady=0)
 
 folder = Button(ventana,text="Select Folder",bg="gray66",width=10,command=direct)
