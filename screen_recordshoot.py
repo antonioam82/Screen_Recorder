@@ -23,7 +23,7 @@ def file_name(tex,ext):
         if tex in i:
             count+=1
     if count>0:
-        filename=tex+"("+str(count)+")"+ext
+        filename=tex+" "+str(count)+ext
     else:
         filename=tex+ext
     return filename
