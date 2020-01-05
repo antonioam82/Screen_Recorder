@@ -69,12 +69,11 @@ def record_state():
         clear_contador()
     else:
         recording = True
-        out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 20.0, (screen_size))
         recorder.configure(text="Stop")
-        t=threading.Thread(target=cuenta)
-        t.start()
         t1=threading.Thread(target=record)
+        t=threading.Thread(target=cuenta)
         t1.start()
+        t.start()
 
 def direct():
     directorio=filedialog.askdirectory()
@@ -83,6 +82,7 @@ def direct():
 
 def record():
     global out
+    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 20.0, (screen_size))
     while recording == True:
         img = pyautogui.screenshot()
         frame = np.array(img)
