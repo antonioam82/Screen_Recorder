@@ -58,7 +58,7 @@ def cuenta():
     if contador2==60:
         contador2=0
         contador1+=1
-    proceso=time.after(1000, cuenta)
+    proceso=time.after(886, cuenta)#COMPENSAR DESFASE
     
 def record_state():
     global out
