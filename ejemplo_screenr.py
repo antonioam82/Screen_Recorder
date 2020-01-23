@@ -1,9 +1,17 @@
 import cv2
 import numpy as np
 import pyautogui
+import ctypes
+
+#OBTIENE TAMAÑO DE LA PANTALLA
+def screen_s():
+    user32 = ctypes.windll.user32
+    user32.SetProcessDPIAware()
+    dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
+    return dimensions
 
 #FORMATO PARA CREACIÓN DE VIDEO
-screen_size = (1600, 900)
+screen_size = screen_s()
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
 out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
 
