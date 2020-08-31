@@ -48,17 +48,22 @@ def screen_shoot():
     pyautogui.screenshot(file_name("screenshoot",".jpg"))
 
 def cuenta():
-    global proceso
+    global proceso #recording
     global contador,contador1,contador2
     time['text'] = str(formato(contador1))+":"+str(formato(contador2))+":"+str(formato(contador))
-    contador+=1
+    #time['text'] = str(contador1)+":"+str(contador2)+":"+str(contador)
+    
     if contador==60:
         contador=0
         contador2+=1
     if contador2==60:
         contador2=0
         contador1+=1
-    proceso=time.after(886, cuenta)#COMPENSAR DESFASE
+    #if contador == 10:
+        #recording = False
+        #print('END')
+    contador+=1
+    proceso=time.after(1000, cuenta)
     
 def record_state():
     global out
@@ -74,6 +79,7 @@ def record_state():
         t=threading.Thread(target=cuenta)
         t1.start()
         t.start()
+        
 
 def direct():
     directorio=filedialog.askdirectory()
@@ -82,12 +88,13 @@ def direct():
 
 def record():
     global out
-    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 20.0, (screen_size))
+    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 20.0, (screen_size))#20.0 18.2
     while recording == True:
         img = pyautogui.screenshot()
         frame = np.array(img)
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         out.write(frame)
+    print("FIN")
     recorder.configure(text="Record")
     out.release()
 
@@ -99,7 +106,7 @@ screen_size = screen_s()
 
 label = Label(ventana, text="Screen Record&Shoot",bg="light gray")
 label.pack(padx=10,pady=1)
-time = Label(ventana, fg='green', width=22, text="00:00:00", bg="black", font=("","10"))
+time = Label(ventana, fg='green', width=22, text="00:00:00", bg="black", font=("","10"))#text="00:00:00"
 time.pack()
 recorder = Button(ventana,text="Record",bg="light blue",fg="red",width=8,command=record_state)#gray66
 recorder.pack(padx=10,pady=10)
