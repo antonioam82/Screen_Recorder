@@ -48,20 +48,15 @@ def screen_shoot():
     pyautogui.screenshot(file_name("screenshoot",".jpg"))
 
 def cuenta():
-    global proceso #recording
+    global proceso
     global contador,contador1,contador2
     time['text'] = str(formato(contador1))+":"+str(formato(contador2))+":"+str(formato(contador))
-    #time['text'] = str(contador1)+":"+str(contador2)+":"+str(contador)
-    
     if contador==60:
         contador=0
         contador2+=1
     if contador2==60:
         contador2=0
         contador1+=1
-    #if contador == 10:
-        #recording = False
-        #print('END')
     contador+=1
     proceso=time.after(1000, cuenta)
     
