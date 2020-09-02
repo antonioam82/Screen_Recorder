@@ -51,13 +51,14 @@ def cuenta():
     global proceso
     global contador,contador1,contador2
     time['text'] = str(formato(contador1))+":"+str(formato(contador2))+":"+str(formato(contador))
+    contador+=1
     if contador==60:
         contador=0
         contador2+=1
     if contador2==60:
         contador2=0
         contador1+=1
-    contador+=1
+    
     proceso=time.after(1000, cuenta)
     
 def record_state():
@@ -75,7 +76,6 @@ def record_state():
         t1.start()
         t.start()
         
-
 def direct():
     directorio=filedialog.askdirectory()
     if directorio!="":
@@ -83,7 +83,7 @@ def direct():
 
 def record():
     global out
-    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 20.0, (screen_size))#20.0 18.2
+    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 19.95, (screen_size))#20.0 18.2
     while recording == True:
         img = pyautogui.screenshot()
         frame = np.array(img)
