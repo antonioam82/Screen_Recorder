@@ -83,7 +83,7 @@ def direct():
 
 def record():
     global out
-    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 19.95, (screen_size))#20.0 18.2
+    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 19.941, (screen_size))#20.0 18.2
     while recording == True:
         img = pyautogui.screenshot()
         frame = np.array(img)
