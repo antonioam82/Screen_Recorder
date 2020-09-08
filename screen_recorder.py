@@ -15,6 +15,7 @@ fourcc = cv2.VideoWriter_fourcc(*"XVID")
 contador=0
 contador1=0
 contador2=0
+countt = 0
 
 def clear_contador():
     global contador,contador1,contador2
@@ -51,13 +52,14 @@ def cuenta():
     global proceso
     global contador,contador1,contador2
     time['text'] = str(formato(contador1))+":"+str(formato(contador2))+":"+str(formato(contador))
-    contador+=1
+    
     if contador==60:
         contador=0
         contador2+=1
     if contador2==60:
         contador2=0
         contador1+=1
+    contador+=1
     
     proceso=time.after(1000, cuenta)
     
@@ -83,13 +85,12 @@ def direct():
 
 def record():
     global out
-    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 19.941, (screen_size))#20.0 18.2
+    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 17.0, (screen_size))#20.0 18.2
     while recording == True:
         img = pyautogui.screenshot()
         frame = np.array(img)
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         out.write(frame)
-    print("FIN")
     recorder.configure(text="Record")
     out.release()
 
