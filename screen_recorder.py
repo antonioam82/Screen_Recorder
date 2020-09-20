@@ -15,7 +15,7 @@ fourcc = cv2.VideoWriter_fourcc(*"XVID")
 contador=0
 contador1=0
 contador2=0
-countt = 0
+#countt = 0
 frame_counter = 0
 
 def clear_contador():
