@@ -45,7 +45,6 @@ def screen_shoot():
     pyautogui.screenshot(file_name("screenshoot",".jpg"))
 
 def cuenta(n):
-    #global proceso
     global contadores,frame_counter
     clock['text'] = str(formato(contadores[0]))+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
     if n == 20.0:
@@ -58,25 +57,18 @@ def cuenta(n):
     if contadores[1]==60:
         contadores[1]=0
         contadores[0]+=1
-    #contador+=1
-    
-    #proceso=time.after(1000, cuenta)
     
 def record_state():
     global out
     global recording
     if recording == True:
         recording = False
-        #time.after_cancel(proceso)
-        #clear_contador()
     else:
         clear_contador()
         recording = True
         recorder.configure(text="Stop")
         t1=threading.Thread(target=record)
-        #t=threading.Thread(target=cuenta)
         t1.start()
-        #t.start()
         
 def direct():
     directorio=filedialog.askdirectory()
@@ -103,7 +95,6 @@ ventana = Tk()
 ventana.geometry("217x165")
 ventana.configure(bg="light gray")
 screen_size = screen_s()
-
 
 label = Label(ventana, text="Screen Record&Shoot",bg="light gray")
 label.pack(padx=10,pady=1)
