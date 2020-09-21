@@ -12,17 +12,12 @@ import os
 
 recording = False
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
-contador=0
-contador1=0
-contador2=0
-#countt = 0
+contadores = [0,0,0]
 frame_counter = 0
 
 def clear_contador():
-    global contador,contador1,contador2
-    contador=0
-    contador1=0
-    contador2=0
+    global contadores
+    contadores = [0,0,0]
 
 def formato(c):
     if c<10:
@@ -51,18 +46,18 @@ def screen_shoot():
 
 def cuenta(n):
     #global proceso
-    global contador,contador1,contador2,frame_counter
-    time['text'] = str(formato(contador1))+":"+str(formato(contador2))+":"+str(formato(contador))
+    global contadores,frame_counter
+    time['text'] = str(formato(contadores[0]))+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
     if n == 20.0:
-        contador+=1
+        contadores[2]+=1
         frame_counter = 0
         
-    if contador==60:
-        contador=0
-        contador2+=1
-    if contador2==60:
-        contador2=0
-        contador1+=1
+    if contadores[2]==60:
+        contadores[2]=0
+        contadores[1]+=1
+    if contadores[1]==60:
+        contadores[1]=0
+        contadores[0]+=1
     #contador+=1
     
     #proceso=time.after(1000, cuenta)
@@ -73,10 +68,12 @@ def record_state():
     if recording == True:
         recording = False
         #time.after_cancel(proceso)
-        clear_contador()
+        #clear_contador()
     else:
         recording = True
         recorder.configure(text="Stop")
+        if contadores != [0,0,0]:
+            clear_contador()
         t1=threading.Thread(target=record)
         #t=threading.Thread(target=cuenta)
         t1.start()
