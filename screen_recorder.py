@@ -4,6 +4,7 @@ from tkinter import Button, Label, Tk
 from tkinter import filedialog
 import cv2
 import ctypes
+import time
 import glob
 import numpy as np
 import pyautogui
@@ -47,7 +48,7 @@ def screen_shoot():
 def cuenta(n):
     #global proceso
     global contadores,frame_counter
-    time['text'] = str(formato(contadores[0]))+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
+    clock['text'] = str(formato(contadores[0]))+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
     if n == 20.0:
         contadores[2]+=1
         frame_counter = 0
@@ -74,6 +75,8 @@ def record_state():
         recorder.configure(text="Stop")
         if contadores != [0,0,0]:
             clear_contador()
+            clock['text'] = str(formato(contadores[0]))+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
+            time.sleep(1)
         t1=threading.Thread(target=record)
         #t=threading.Thread(target=cuenta)
         t1.start()
@@ -107,8 +110,8 @@ screen_size = screen_s()
 
 label = Label(ventana, text="Screen Record&Shoot",bg="light gray")
 label.pack(padx=10,pady=1)
-time = Label(ventana, fg='green', width=22, text="00:00:00", bg="black", font=("","10"))#text="00:00:00"
-time.pack()
+clock = Label(ventana, fg='green', width=22, text="00:00:00", bg="black", font=("","10"))#text="00:00:00"
+clock.pack()
 recorder = Button(ventana,text="Record",bg="light blue",fg="red",width=8,command=record_state)#gray66
 recorder.pack(padx=10,pady=10)
 shoot = Button(ventana,text="Screenshot",bg="light blue",fg="red",width=8,command=screen_shoot)
