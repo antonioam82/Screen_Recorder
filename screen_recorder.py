@@ -4,7 +4,6 @@ from tkinter import Button, Label, Tk
 from tkinter import filedialog
 import cv2
 import ctypes
-import time
 import glob
 import numpy as np
 import pyautogui
@@ -71,12 +70,9 @@ def record_state():
         #time.after_cancel(proceso)
         #clear_contador()
     else:
+        clear_contador()
         recording = True
         recorder.configure(text="Stop")
-        if contadores != [0,0,0]:
-            clear_contador()
-            clock['text'] = str(formato(contadores[0]))+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
-            time.sleep(1)
         t1=threading.Thread(target=record)
         #t=threading.Thread(target=cuenta)
         t1.start()
@@ -89,6 +85,7 @@ def direct():
 
 def record():
     global out, frame_counter
+    
     out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 20.0, (screen_size))#20.0 18.2 #17
     while recording == True:
         img = pyautogui.screenshot()
