@@ -108,7 +108,7 @@ screen_size = screen_s()
 
 Dirlabel = Entry(ventana,bg="white",width=90,textvariable=directorio_actual)
 Dirlabel.pack(padx=1,pady=1)
-clock = Label(ventana, fg='green', width=21, text="00:00:00", bg="black", font=("","30"))#text="00:00:00"
+clock = Label(ventana, fg='green', width=21, text="00:00:00", bg="black", font=("","29"))#text="00:00:00"
 clock.pack(pady=10)
 recorder = Button(ventana,text="Record",bg="light blue",fg="red",width=33,command=record_state)#gray66
 recorder.place(x=11,y=88)
@@ -121,3 +121,4 @@ folder.pack(padx=1,side='bottom')
 get_dir()
 
 ventana.mainloop()
+
