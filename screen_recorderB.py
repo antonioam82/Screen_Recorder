@@ -1,87 +1,123 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from tkinter import *
-import pyaudio
+from tkinter import Button, Label, Tk
+from tkinter import filedialog
 import cv2
 import ctypes
-import wave
+import glob
 import numpy as np
-from time import perf_counter
 import pyautogui
 import threading
+import os
+
 
 recording = False
+fourcc = cv2.VideoWriter_fourcc(*"XVID")
+contadores = [0,0,0]
+frame_counter = 0
 
-def init_aud():
-    global stream, data, frames, out, audio
-    audio = pyaudio.PyAudio()
-    fourcc = cv2.VideoWriter_fourcc(*"XVID")
-    out = cv2.VideoWriter("output.avi", fourcc, 20.0, (screen_size))
-    stream=audio.open(format=FORMAT,channels=CHANNELS,
-                      rate=RATE, input=True,
-                      frames_per_buffer=CHUNK)
-    data = ""
-    frames = []
+def clear_contador():
+    global contadores
+    contadores = [0,0,0]
+
+def formato(c):
+    if c<10:
+        c="0"+str(c)
+    return c
+
+def get_dir():
+    directorio_actual.set(os.getcwd())
 
 def screen_s():
-    #global user32
     user32 = ctypes.windll.user32
     user32.SetProcessDPIAware()
     dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
     return dimensions
 
+def file_name(tex,ext):
+    count = 0
+    for i in glob.glob('*'+ext):
+        if tex in i:
+            count+=1
+    if count>0:
+        filename=tex+" "+str(count)+ext
+    else:
+        filename=tex+ext
+    return filename
+
+def screen_shoot():
+    pyautogui.screenshot(file_name("screenshoot",".jpg"))
+
+def cuenta(n):
+    global contadores,frame_counter
+    clock['text'] = str(formato(contadores[0]))+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
+    if n == 20.0:
+        contadores[2]+=1
+        frame_counter = 0
+        
+    if contadores[2]==60:
+        contadores[2]=0
+        contadores[1]+=1
+    if contadores[1]==60:
+        contadores[1]=0
+        contadores[0]+=1
+    
 def record_state():
-    global recording, stream
+    global out
+    global recording
     if recording == True:
         recording = False
     else:
+        clear_contador()
         recording = True
-        init_aud()
-        recorder.configure(text="Parar")
+        recorder.configure(text="Stop")
         t1=threading.Thread(target=record)
-        t2=threading.Thread(target=audio_record)
         t1.start()
-        t2.start()
+
+        
+def direct():
+    directorio=filedialog.askdirectory()
+    if directorio!="":
+        os.chdir(directorio)
+        directorio_actual.set(os.getcwd())
 
 def record():
-    global img, frame, out
+    global out, frame_counter
+    
+    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 20.0, (screen_size))#20.0 18.2 #17
     while recording == True:
         img = pyautogui.screenshot()
         frame = np.array(img)
         frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
         out.write(frame)
-    recorder.configure(text="Grabar")
+        frame_counter+=1
+        cuenta(frame_counter)
+        
+    print(frame_counter)
+    recorder.configure(text="Record")
     out.release()
 
-def audio_record():
-    global data, stream, frames
-    while recording == True:
-        data = stream.read(CHUNK)
-        frames.append(data)
-
-    stream.stop_stream()
-    stream.close()
-    audio.terminate()
-
-    waveFile = wave.open(outAudio, 'wb')
-    waveFile.setnchannels(CHANNELS)
-    waveFile.setsampwidth(audio.get_sample_size(FORMAT))
-    waveFile.setframerate(RATE)
-    waveFile.writeframes(b''.join(frames))
-    waveFile.close()
-    
 ventana = Tk()
-ventana.geometry("150x100")
-#ventana.title("Screen/Audio Rescorder")
+ventana.title("Screen Recorder")
+ventana.geometry("507x143")
+ventana.configure(bg="light gray")
+directorio_actual=StringVar()
+screen_size = screen_s()
 
-screen_size=screen_s()
-CHUNK = 1024
-RATE = 44100
-FORMAT = pyaudio.paInt16
-CHANNELS = 2
-init_aud()
-outAudio = "output.wav"
-label = Label(ventana, text="Screen/Audio Recorder",fg='blue')
-label.pack(padx=10,pady=1)
-recorder = Button(ventana,text="Grabar",command=record_state)
-recorder.pack(padx=10,pady=20)
+
+Dirlabel = Entry(ventana,bg="white",width=90,textvariable=directorio_actual)
+Dirlabel.pack(padx=1,pady=1)
+clock = Label(ventana, fg='green', width=21, text="00:00:00", bg="black", font=("","30"))#text="00:00:00"
+clock.pack(pady=10)
+recorder = Button(ventana,text="Record",bg="light blue",fg="red",width=33,command=record_state)#gray66
+recorder.place(x=11,y=88)
+shoot = Button(ventana,text="Screenshot",bg="light blue",fg="red",width=33,command=screen_shoot)
+shoot.place(x=255,y=88)
+
+folder = Button(ventana,text="Select Folder",bg="gray66",width=68,command=direct)
+folder.pack(padx=1,side='bottom')
+
+get_dir()
 
 ventana.mainloop()
