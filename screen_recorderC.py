@@ -50,7 +50,7 @@ def screen_shoot():
 
 def cuenta(n):
     global contadores,frame_counter
-    clock['text'] = str(contadores[0])+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
+    clock['text'] = str(formato(contadores[0]))+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
     if n == 20.0:
         contadores[2]+=1
         frame_counter = 0
