@@ -50,7 +50,7 @@ def screen_shoot():
 
 def cuenta(n):
     global contadores,frame_counter
-    clock['text'] = str(formato(contadores[0]))+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
+    clock['text'] = str(contadores[0])+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
     if n == 20.0:
         contadores[2]+=1
         frame_counter = 0
@@ -82,20 +82,26 @@ def direct():
         directorio_actual.set(os.getcwd())
 
 def record():
-    global out, frame_counter
-    
+    global out, frame_counter, fail
+    fail = False
     out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 20.0, (screen_size))#20.0 18.2 #17
     while recording == True:
-        img = pyautogui.screenshot()
-        frame = np.array(img)
-        frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
-        out.write(frame)
-        frame_counter+=1
-        cuenta(frame_counter)
+        try:
+            img = pyautogui.screenshot()
+            frame = np.array(img)
+            frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+            out.write(frame)
+            frame_counter+=1
+            cuenta(frame_counter)
+        except Exception as e:
+            print(str(e))
+            fail = True
+            break
         
-    print(frame_counter)
-    recorder.configure(text="Record")
-    out.release()
+    if fail == False:
+        print(frame_counter)
+        recorder.configure(text="Record")
+        out.release()
 
 ventana = Tk()
 ventana.title("Screen Recorder")
