@@ -18,17 +18,19 @@ fourcc = cv2.VideoWriter_fourcc(*"XVID")
 contadores = [0,0,0]
 frame_counter = 0
 
-#INIT SOUND RECORDER:
-CHUNK = 1024
-FORMAT = pyaudio.paInt16
-CHANNELS = 2
-RATE = 44100
-#RECORD_SECONDS = 5
-WAVE_OUTPUT_FILENAME = "output.wav"
-p = pyaudio.PyAudio()
-frames = []
+def init_recorder():
+    global stream, CHUNK, frames, p, RATE, CHANNELS, WAVE_OUTPUT_FILENAME, FORMAT
+    #INIT SOUND RECORDER:
+    CHUNK = 1024
+    FORMAT = pyaudio.paInt16
+    CHANNELS = 2
+    RATE = 44100
+    #RECORD_SECONDS = 5
+    WAVE_OUTPUT_FILENAME = "output.wav"
+    p = pyaudio.PyAudio()
+    frames = []
 
-stream = p.open(format=FORMAT,
+    stream = p.open(format=FORMAT,
                 channels=CHANNELS,
                 rate=RATE,
                 input=True,
@@ -87,6 +89,7 @@ def record_state():
         recording = False
     else:
         clear_contador()
+        init_recorder()
         recording = True
         recorder.configure(text="Stop")
         t = threading.Thread(target=record_sound)
@@ -123,6 +126,7 @@ def record():
     out.release()
 
 def record_sound():
+    global stream, CHUNK, frames, p, RATE, CHANNELS, WAVE_OUTPUT_FILENAME, FORMAT
     while recording == True:
         data = stream.read(CHUNK)
         frames.append(data)
