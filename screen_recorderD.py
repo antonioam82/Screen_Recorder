@@ -3,6 +3,8 @@
 from tkinter import *
 from tkinter import Button, Label, Tk
 from tkinter import filedialog
+from mhmovie.code import *
+import time
 import wave###
 import pyaudio
 import cv2
@@ -97,9 +99,14 @@ def record_state():
         t = threading.Thread(target=record_sound)
         t1.start()
         t.start()
-        
 
-        
+def merge():
+    vid = movie("screenvideo.avi")
+    aud = music("output.wav")
+    result = vid+aud
+    result.save("final_video.avi")
+    
+    
 def direct():
     directorio=filedialog.askdirectory()
     if directorio!="":
@@ -109,7 +116,7 @@ def direct():
 def record():
     global out, frame_counter
     
-    out = cv2.VideoWriter(file_name("screenvideo",".avi"), fourcc, 20.0, (screen_size))#20.0 18.2 #17
+    out = cv2.VideoWriter("screenvideo.avi", fourcc, 20.0, (screen_size))#20.0 18.2 #17
     while recording == True:
         try:
             img = pyautogui.screenshot()
@@ -124,6 +131,8 @@ def record():
     print(frame_counter)
     recorder.configure(text="Record")
     out.release()
+    time.sleep(2)
+    merge()
 
 def record_sound():
     global stream, CHUNK, frames, p, RATE, CHANNELS, WAVE_OUTPUT_FILENAME, FORMAT
