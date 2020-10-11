@@ -27,7 +27,6 @@ def init_recorder():
     FORMAT = pyaudio.paInt16
     CHANNELS = 2
     RATE = 44100
-    #RECORD_SECONDS = 5
     WAVE_OUTPUT_FILENAME = "output.wav"
     p = pyaudio.PyAudio()
     frames = []
@@ -62,7 +61,7 @@ def file_name(tex,ext):
         if tex in i:
             count+=1
     if count>0:
-        filename=tex+" "+str(count)+ext
+        filename=tex+"_"+str(count)+ext
     else:
         filename=tex+ext
     return filename
@@ -101,10 +100,15 @@ def record_state():
         t.start()
 
 def merge():
-    vid = movie("screenvideo.avi")
-    aud = music("output.wav")
+    global WAVE_OUTPUT_FILENAME, OUTPUT_VIDEO
+    vid = movie(OUTPUT_VIDEO)
+    aud = music(WAVE_OUTPUT_FILENAME)
     result = vid+aud
-    result.save("final_video.avi")
+    name = file_name('final_video','.avi')
+    print(name)
+    result.save(name)
+    os.remove(OUTPUT_VIDEO)
+    os.remove(WAVE_OUTPUT_FILENAME)
     
     
 def direct():
@@ -114,9 +118,9 @@ def direct():
         directorio_actual.set(os.getcwd())
 
 def record():
-    global out, frame_counter
-    
-    out = cv2.VideoWriter("screenvideo.avi", fourcc, 20.0, (screen_size))#20.0 18.2 #17
+    global out, frame_counter, OUTPUT_VIDEO
+    OUTPUT_VIDEO = "screenvideo.avi"
+    out = cv2.VideoWriter(OUTPUT_VIDEO, fourcc, 20.0, (screen_size))#20.0 18.2 #17
     while recording == True:
         try:
             img = pyautogui.screenshot()
@@ -150,6 +154,7 @@ def record_sound():
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
+    print("finish")
 
 ventana = Tk()
 ventana.title("Screen Recorder")
@@ -174,3 +179,4 @@ folder.pack(padx=1,side='bottom')
 get_dir()
 
 ventana.mainloop()
+
