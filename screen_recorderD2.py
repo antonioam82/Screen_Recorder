@@ -9,7 +9,6 @@ import wave###
 import pyaudio
 import cv2
 import ctypes
-import glob
 import numpy as np
 import pyautogui
 import threading
