@@ -5,7 +5,7 @@ from tkinter import Button, Label, Tk
 from tkinter import filedialog
 from mhmovie.code import *
 import time
-import wave###
+import wave
 import pyaudio
 import cv2
 import ctypes
@@ -55,16 +55,17 @@ def screen_s():
     dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
     return dimensions
 
-def file_name(tex,ext):
+def file_name():
     count = 0
-    for i in glob.glob('*'+ext):
-        if tex in i:
+    for i in os.listdir():
+        if 'final_video' in i:
             count+=1
+            print(count)
     if count>0:
-        filename=tex+"_"+str(count)+ext
+        print("OK")
+        return "final_video"+"_"+str(count)+".avi"
     else:
-        filename=tex+ext
-    return filename
+        return "final_video.avi"
 
 def screen_shoot():
     pyautogui.screenshot(file_name("screenshoot",".jpg"))
@@ -92,7 +93,9 @@ def record_state():
         clear_contador()
         init_recorder()
         recording = True
+        
         recorder.configure(text="Stop")
+        
         t1=threading.Thread(target=record)
         t = threading.Thread(target=record_sound)
         t1.start()
@@ -103,7 +106,7 @@ def merge():
     vid = movie(OUTPUT_VIDEO)
     aud = music(WAVE_OUTPUT_FILENAME)
     result = vid+aud
-    name = file_name('final_video','.avi')
+    name = file_name()
     print(name)
     result.save(name)
     os.remove(OUTPUT_VIDEO)
@@ -134,7 +137,6 @@ def record():
     print(frame_counter)
     recorder.configure(text="Record")
     out.release()
-    time.sleep(2)
     merge()
 
 def record_sound():
