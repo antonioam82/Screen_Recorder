@@ -26,7 +26,6 @@ def init_recorder():
     FORMAT = pyaudio.paInt16
     CHANNELS = 2
     RATE = 44100
-    #RECORD_SECONDS = 5
     WAVE_OUTPUT_FILENAME = "output.wav"
     p = pyaudio.PyAudio()
     frames = []
@@ -94,7 +93,6 @@ def record_state():
         init_recorder()
         recording = True
         recorder.configure(text="Stop")
-        t = threading.Thread(target=record_sound)
         t1=threading.Thread(target=record)
         t = threading.Thread(target=record_sound)
         t1.start()
