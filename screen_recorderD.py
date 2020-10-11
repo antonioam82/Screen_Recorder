@@ -93,7 +93,6 @@ def record_state():
         init_recorder()
         recording = True
         recorder.configure(text="Stop")
-        t = threading.Thread(target=record_sound)
         t1=threading.Thread(target=record)
         t = threading.Thread(target=record_sound)
         t1.start()
