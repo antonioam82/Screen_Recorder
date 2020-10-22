@@ -5,7 +5,7 @@ from tkinter import Button, Label, Tk
 from tkinter import filedialog
 from mhmovie.code import *
 import time
-import wave
+import wave###
 import pyaudio
 import cv2
 import ctypes
@@ -19,6 +19,7 @@ recording = False
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
 contadores = [0,0,0]
 frame_counter = 0
+finished = False################################################################
 
 def init_recorder():
     global stream, CHUNK, frames, p, RATE, CHANNELS, WAVE_OUTPUT_FILENAME, FORMAT
@@ -55,17 +56,16 @@ def screen_s():
     dimensions = user32.GetSystemMetrics(0),user32.GetSystemMetrics(1)
     return dimensions
 
-def file_name():
+def file_name(tex,ext):
     count = 0
-    for i in os.listdir():
-        if 'final_video' in i:
+    for i in glob.glob('*'+ext):
+        if tex in i:
             count+=1
-            print(count)
     if count>0:
-        print("OK")
-        return "final_video"+"_"+str(count)+".avi"
+        filename=tex+"_"+str(count)+ext
     else:
-        return "final_video.avi"
+        filename=tex+ext
+    return filename
 
 def screen_shoot():
     pyautogui.screenshot(file_name("screenshoot",".jpg"))
@@ -93,24 +93,26 @@ def record_state():
         clear_contador()
         init_recorder()
         recording = True
-        
         recorder.configure(text="Stop")
-        
         t1=threading.Thread(target=record)
         t = threading.Thread(target=record_sound)
         t1.start()
         t.start()
 
 def merge():
-    global WAVE_OUTPUT_FILENAME, OUTPUT_VIDEO
+    global WAVE_OUTPUT_FILENAME, OUTPUT_VIDEO, finished
     vid = movie(OUTPUT_VIDEO)
     aud = music(WAVE_OUTPUT_FILENAME)
-    result = vid+aud
-    name = file_name()
+    while True:########################################################
+        if finished == True:
+            result = vid+aud
+            break
+    name = file_name('final_video','.avi')
     print(name)
     result.save(name)
     os.remove(OUTPUT_VIDEO)
     os.remove(WAVE_OUTPUT_FILENAME)
+    finished = False##################################################
     
     
 def direct():
@@ -137,10 +139,11 @@ def record():
     print(frame_counter)
     recorder.configure(text="Record")
     out.release()
+    time.sleep(2)
     merge()
 
 def record_sound():
-    global stream, CHUNK, frames, p, RATE, CHANNELS, WAVE_OUTPUT_FILENAME, FORMAT
+    global stream, CHUNK, frames, p, RATE, CHANNELS, WAVE_OUTPUT_FILENAME, FORMAT, finished
     while recording == True:
         data = stream.read(CHUNK)
         frames.append(data)
@@ -155,6 +158,7 @@ def record_sound():
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
+    finished = True###############################################
     print("finish")
 
 ventana = Tk()
