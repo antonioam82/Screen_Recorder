@@ -84,7 +84,8 @@ def direct():
 def record():
     global out, frame_counter, fail
     fail = False
-    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, 23.97, (screen_size))#20.0 18.2 #17
+    frameRate = 24000/1001
+    out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, frameRate, (screen_size))#20.0 18.2 #17
     while recording == True:
         try:
             img = pyautogui.screenshot()
