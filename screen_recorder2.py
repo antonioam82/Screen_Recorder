@@ -9,7 +9,6 @@ import glob
 import numpy as np
 import pyautogui
 import threading
-from pynput import keyboard
 import os
 
 recording = False
@@ -49,20 +48,6 @@ def file_name(tex,ext):
 def screen_shoot():
     pyautogui.screenshot(file_name("screenshoot",".jpg"))
 
-def on_press(key):
-    global listener
-    if key == keyboard.Key.space:
-        #return False  # Detiene el listener
-        listener.stop()
-        print("Stopped")
-
-def listening():
-    global listener
-    listener = keyboard.Listener(on_press=on_press)
-    listener.start()
-    print("listening")
-
-
 def cuenta(n):
     global contadores,frame_counter
     clock['text'] = str(contadores[0])+":"+str(formato(contadores[1]))+":"+str(formato(contadores[2]))
@@ -99,7 +84,7 @@ def direct():
 def record():
     global out, frame_counter, fail
     fail = False
-    frameRate = 30
+    frameRate = 1000 // 30
     out = cv2.VideoWriter(file_name("screenvideo",".mp4"), fourcc, frameRate, (screen_size))#20.0 18.2 #17
     while recording == True:
         try:
@@ -131,7 +116,7 @@ Dirlabel = Entry(ventana,bg="white",width=90,textvariable=directorio_actual)
 Dirlabel.pack(padx=1,pady=1)
 clock = Label(ventana, fg='green', width=21, text="0:00:00", bg="black", font=("","29"))#text="00:00:00"
 clock.pack(pady=10)
-recorder = Button(ventana,text="Listen to keyboard",bg="light blue",fg="red",width=33,command=listening)
+recorder = Button(ventana,text="Record",bg="light blue",fg="red",width=33,command=record_state)#gray66
 recorder.place(x=11,y=88)
 shoot = Button(ventana,text="Screenshot",bg="light blue",fg="red",width=33,command=screen_shoot)
 shoot.place(x=255,y=88)
